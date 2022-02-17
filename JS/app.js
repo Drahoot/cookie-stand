@@ -4,6 +4,8 @@ let custHourly = ['6am: ', '7am: ', '8am: ', '9am: ', '10am: ', '11am: ', '12pm:
 
 let cookieSection = document.getElementById('cookie-sales');
 
+let cookieForm = document.getElementById('cookie-form');
+
 let table = document.querySelector('table');
 
 let cookieCraze = [];
@@ -32,24 +34,26 @@ let dubai = new City('Dubai', 11, 38, 3.7);
 let paris = new City('Paris', 20, 38, 2.3);
 let lima = new City('Lima', 2, 16, 4.6);
 
-seattle.getCustomerPerHour();
-tokyo.getCustomerPerHour();
-dubai.getCustomerPerHour();
-paris.getCustomerPerHour();
-lima.getCustomerPerHour();
+// seattle.getCustomerPerHour();
+// tokyo.getCustomerPerHour();
+// dubai.getCustomerPerHour();
+// paris.getCustomerPerHour();
+// lima.getCustomerPerHour();
 
 
 City.prototype.avgCookie = function () {
+  this.getCustomerPerHour();
   for (let i = 0; i < custHourly.length; i++) {
     this.averageCookieHour.push(Math.round(this.customerPerHour[i] * this.avgCookiePerCustomer));
     this.totalCookies += (this.averageCookieHour[i]);
   }
 }
-seattle.avgCookie();
-tokyo.avgCookie();
-dubai.avgCookie();
-paris.avgCookie();
-lima.avgCookie();
+// seattle.avgCookie();
+// tokyo.avgCookie();
+// dubai.avgCookie();
+// paris.avgCookie();
+// lima.avgCookie();
+
 
 
 function tableHeading(){
@@ -71,6 +75,7 @@ function tableHeading(){
 }
 
 City.prototype.render = function(){
+  this.avgCookie();
   let row2 = document.createElement('tr');
   let th3Elem = document.createElement('td');
   th3Elem.textContent = this.location;
@@ -105,6 +110,29 @@ tokyo.render();
 dubai.render();
 paris.render();
 lima.render();
+
+function randCust(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+
+  let location = e.target.locatedCity.value;
+  let minCust = +e.target.minCust.value;
+  let maxCust = +e.target.maxCust.value;
+  let avgCookiePerCustomer = +e.target.avgCust.value;
+
+  let newCity = new City(location, minCust, maxCust, avgCookiePerCustomer);
+
+  // newCity.avgCookie();
+  newCity.render();
+
+ //  newCity.reset();
+
+}
+
+cookieForm.addEventListener('submit', handleSubmit);
 
 //renderCity();
 
@@ -279,9 +307,6 @@ lima.render();
 //   }
 // }
 // }
-function randCust(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
 //seattle.getCustomerPerHour();
 //seattle.avgCookie();
 //seattle.render();
